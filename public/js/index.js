@@ -14,8 +14,11 @@ socket.on('update', function(data) {
     busy();
     var screenpath = location.protocol + "//" +
         location.host + "/rviz_bin/" + data;
-    $("#map").css('background-image', "url("
-        + screenpath + ")");
+    $("<div/>").css('background-image', "url("+ screenpath + ")")
+               .addClass('map')
+               .hide()
+               .appendTo('#right')
+               .fadeIn();
 });
 
 socket.on('finish', function(data) {

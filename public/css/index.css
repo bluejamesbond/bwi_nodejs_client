@@ -1,6 +1,9 @@
+body {
+    background: #2B2F36;
+}
+
 #header {
-    background:#FFF;
-    border-bottom:1px solid #DDD;
+    background:#2c3e50;
     position: fixed;
     top:0;
     left:0;
@@ -15,12 +18,11 @@
 }
 
 .tab {
-    background: #FFF;
     height:65px;
-    line-height: 65px;
+    line-height: 67px;
     font-size:13px;
     font-weight:bold;
-    color:#444;
+    color:#BDBDBD;
     letter-spacing: 1px;
     display:inline-block;
     vertical-align: top;
@@ -29,8 +31,8 @@
 }
 
 .tab-selected {
-    background: #2c3e50;
-    color:#FFF;
+    background: #FFF;
+    color:#000;
 }
 
 #content {
@@ -43,7 +45,6 @@
 
 #left {
     position: absolute;
-    border-right: 1px solid #DDD;
     width:300px;
     left:0;
     bottom:0;
@@ -58,8 +59,7 @@
     right:0;
     bottom:0;
     position: absolute;
-    background: #EEE;
-    box-shadow: inset 0 0 20px 10px #DDD;
+    background: #202328;
 }
 
 .button {
@@ -69,7 +69,7 @@
     font-weight: bolder;
     font-size:12px;
     letter-spacing: 1px;
-    background: #888;
+    background: #424852;
     border-radius:5px;
     width:280px;
     margin-top:5px;
@@ -84,13 +84,13 @@
 }
 
 .intro-title {
-    color: #CCC;
+    color: #FFF;
     font-size:30px;
     padding-top:10px;
 }
 
 .intro-description {
-    color: #555;
+    color: #B8B8B8;
     font-size:12px;
     padding-top:10px;
     padding-bottom:15px;
@@ -112,14 +112,11 @@
     font-size:9px;
     letter-spacing: 1px;
     color: #FFF;
-    background: #2c3e50;
+    background: #7f8c8d;
     font-weight: bolder;
-    width: 300px;
     text-align: center;
     bottom:0;
     right:0;
-    border:1px solid #34495e;
-    height:25px;
-    line-height: 25px;
-    border-top-left-radius: 4px;
+    left:0;
+    padding: 10px;
 }
