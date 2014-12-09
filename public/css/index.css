@@ -1,0 +1,125 @@
+#header {
+    background:#FFF;
+    border-bottom:1px solid #DDD;
+    position: fixed;
+    top:0;
+    left:0;
+    right:0;
+    height:65px;
+    z-index: 2;
+}
+
+.tab-group {
+    text-align: center;
+    font-size:0;
+}
+
+.tab {
+    background: #FFF;
+    height:65px;
+    line-height: 65px;
+    font-size:13px;
+    font-weight:bold;
+    color:#444;
+    letter-spacing: 1px;
+    display:inline-block;
+    vertical-align: top;
+    padding-left:60px;
+    padding-right:60px;
+}
+
+.tab-selected {
+    background: #2c3e50;
+    color:#FFF;
+}
+
+#content {
+    position: absolute;
+    top:65px;
+    bottom:0;
+    right:0;
+    left:0;
+}
+
+#left {
+    position: absolute;
+    border-right: 1px solid #DDD;
+    width:300px;
+    left:0;
+    bottom:0;
+    top:0;
+    padding:20px;
+    padding-bottom: 0px;
+}
+
+#right {
+    left:340px;
+    top:0;
+    right:0;
+    bottom:0;
+    position: absolute;
+    background: #EEE;
+    box-shadow: inset 0 0 20px 10px #DDD;
+}
+
+.button {
+    width:100%;
+    padding:15px 10px ;
+    color:#FFF;
+    font-weight: bolder;
+    font-size:12px;
+    letter-spacing: 1px;
+    background: #888;
+    border-radius:5px;
+    width:280px;
+    margin-top:5px;
+    margin-bottom:5px;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.green {
+    background: #16a085;
+}
+
+.intro-title {
+    color: #CCC;
+    font-size:30px;
+    padding-top:10px;
+}
+
+.intro-description {
+    color: #555;
+    font-size:12px;
+    padding-top:10px;
+    padding-bottom:15px;
+}
+
+#map, .map {
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: 2;
+}
+
+#status {
+    position: absolute;
+    z-index: 3;
+    text-transform: uppercase;
+    font-size:9px;
+    letter-spacing: 1px;
+    color: #FFF;
+    background: #2c3e50;
+    font-weight: bolder;
+    width: 300px;
+    text-align: center;
+    bottom:0;
+    right:0;
+    border:1px solid #34495e;
+    height:25px;
+    line-height: 25px;
+    border-top-left-radius: 4px;
+}

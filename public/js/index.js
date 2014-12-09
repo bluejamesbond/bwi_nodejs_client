@@ -14,15 +14,18 @@ socket.on('update', function(data) {
     busy();
     var screenpath = location.protocol + "//" +
         location.host + "/rviz_bin/" + data;
-    $("#map").attr('src', screenpath);
+    $("#map").css('background-image', "url("
+        + screenpath + ")");
 });
 
 socket.on('finish', function(data) {
-    $("#status").text("process finished");
+    $("#status").text(data);
+    free();
 });
 
 socket.on('kill', function(data) {
-    $("#status").text("process killed");
+    $("#status").text(data);
+    free();
 });
 
 socket.on('error', function(data) {
@@ -31,6 +34,7 @@ socket.on('error', function(data) {
 
 socket.on('load', function(data) {
     $("#status").text(data);
+    busy();
 });
 
 $(document).ready(function() {
