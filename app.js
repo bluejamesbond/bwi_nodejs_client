@@ -59,11 +59,16 @@ app.post('/start', function(req, res) {
 app.post('/kill', function(req, res) {
     if (inactive) {
         res.send('inactive');
+        io.sockets.emit("kill", "kill denied")
     } else {
         res.send('requested termination');
         send('kill');
     }
-})
+});
+
+app.post('/active', function(req, res) {
+    res.send(!inactive);
+});
 
 process.on("exit", function() {
     if (!inactive) {

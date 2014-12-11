@@ -13,23 +13,31 @@ var exec = function() {
     return cp;
 }
 
+var spawn = function() {
+    var cp = child_process.spawn.apply(child_process, arguments);
+    child_handles.push(cp);
+    return cp;
+}
+
 var kill = function() {
     if (alive) {
         alive = false;
 
-        exec("kill " + ros_pid, function(err, stdout, stderr) {
-            exec("kill " + rviz_pid, function(err, stdout, stderr) {
+        setTimeout(function(){
+            exec("kill " + ros_pid, function(err, stdout, stderr) {
+                exec("kill " + rviz_pid, function(err, stdout, stderr) {
 
-                child_handles.forEach(function(child_process) {
-                    console.log("killed " + child_process.pid);
-                    child_process.kill('SIGINT');
+                    child_handles.forEach(function(child_process) {
+                        console.log("killed " + child_process.pid);
+                        child_process.kill('SIGINT');
+                    });
+
+                    send("kill", "process terminated. flushed proceses");
+
+                    return process.exit(0);
                 });
-
-                send("kill", "process terminated. flushed proceses");
-
-                return process.exit(0);
             });
-        });
+        }, 3000);
     }
 }
 
@@ -53,7 +61,20 @@ var send = function(type, data) {
     });
 }
 
-exec("roslaunch bwi_nav2d nav2d_mapper_krr2014.launch");
+var bash = spawn("bash");
+
+bash.stdout.on('data', function(buf) {
+    console.log(buf = String(buf))
+    send("cout", buf);
+});
+
+bash.stderr.on('data', function(buf) {
+    console.log(buf = String(buf));
+    send("cerr", buf);
+});
+
+bash.stdin.write("roslaunch bwi_nav2d nav2d_mapper_krr2014.launch --screen");
+bash.stdin.end();
 
 send("load", "waiting on roslaunch");
 
@@ -72,47 +93,60 @@ setTimeout(function() {
             }
         })
 
+        var lastscreen;
+
         setTimeout(function() {
             exec("pidof rviz", function(err, stdout, stderr) {
                 rviz_pid = stdout;
-                send("load", "init mapping");
+                var capture = function(done) {
+                    console.log("taking screenshot");
+                    exec("kill -10 " + rviz_pid, function(err, stdout, stderr) {
+                        setTimeout(function() {
+                            try {
+                                if (lastscreen) {
+                                    fs.unlinkSync(lastscreen);
+                                }
+                                var file = getLastModifiedFile(SCREENSHOT_OUTPUT_PATH);
+                                var currscreen = path.join(SCREENSHOT_OUTPUT_PATH, file);
+                                lastscreen = currscreen;
+                                send("update", file);
+                            } catch (e) {
+                                console.error(e);
+                                lastscreen = null;
+                                return done(1);
+                            }
+                            done(0);
+                        }, 2000);
+                    });
+                };
+                send("load", "initialized mapping. please wait...");
                 exec("rosservice call /StartMapping 3", function(err, stdout, stderr) {
                     if (err) {
                         return console.error(err);
                     }
-                    send("load", "init mapping");
-                    setTimeout(function() {
-                        console.log("starting exploration");
-                        send("load", "init exploration");
-                        exec("rosservice call /StartExploration 2", function() {
-                            if (err) {
-                                return console.error(err);
-                            }
-                            var start = Date.now();
-                            var lastscreen;
-                            var robot = function() {
-                                console.log("taking screenshot");
-                                exec("kill -10 " + rviz_pid, function(err, stdout, stderr) {
-                                    setTimeout(function() {
-                                        try {
-                                            if (lastscreen) {
-                                                fs.unlinkSync(lastscreen);
-                                            }
-                                            var file = getLastModifiedFile(SCREENSHOT_OUTPUT_PATH);
-                                            var currscreen = path.join(SCREENSHOT_OUTPUT_PATH, file);
-                                            lastscreen = currscreen;
-                                            send("update", file);
-                                        } catch (e) {
-                                            console.error(e);
-                                            send("error", e.message);
+                    capture(function(){
+                        send("load", "waiting for positioning.  please wait...");
+                        setTimeout(function() {
+                            console.log("starting exploration");
+                            send("load", "initialized exploration.  please wait...");
+                            exec("rosservice call /StartExploration 2", function() {
+                                if (err) {
+                                    return console.error(err);
+                                }
+                                var loop = function(){
+                                    capture(function(err){
+                                        if(err) {
+                                            send("error", "retrying after 4 seconds");
+                                            return setTimeout(loop, 4000);
                                         }
-                                        setTimeout(robot, 2000);
-                                    }, 2000);
-                                });
-                            };
-                            robot();
-                        });
-                    }, 10000);
+                                        setTimeout(loop, 2000);
+                                    });
+                                };
+
+                                loop();
+                            });
+                        }, 10000);
+                    });
                 });
             });
         }, 10000);

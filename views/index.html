@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/css/typography.css">
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/index.css">
+    <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:300,400,700' rel='stylesheet' type='text/css'>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//cdn.socket.io/socket.io-1.2.1.js"></script>
     <script src="/js/index.js"></script>
@@ -23,6 +24,7 @@
         <div id = "logo"></div>
         <div class = "tab-group">
             <div id = "map-section-button" class = "tab tab-selected">MAP</div>
+            <div id = "map-section-button" class = "tab">BWI</div>
             <div id = "about-section-button" class = "tab">ABOUT</div>
         </div>
     </div>
@@ -32,10 +34,12 @@
         <div class = "intro-description">This set of libraries and ROS nodes allows to control a mobile robot within a planar environment. The main features are a purely reactive obstacle avoidance, a simple path planner, and a graph based SLAM (Simultaneous Localization and Mapping) node that allows multiple robots to cooperatively build a map. By using an exploration plugin for the navigation module, one or more robots can autonomously explore there working space and create a shared map for navigation on all robots.</div>
         <div class = "button green" id = "start">Start</div>
         <div class = "button" id = "kill">Kill</div>
+        <div class = "button" id = "togg-console">CONSOLE</div>
         <div id = "status">System ready</div>
     </div>
     <div id = "right">
         <div id = "map"></div>
     </div>
+    <pre id = "console"></pre>
   </body>
 </html>

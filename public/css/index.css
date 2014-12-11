@@ -1,9 +1,9 @@
 body {
-    background: #2B2F36;
+    background: #222;
 }
 
 #header {
-    background:#2c3e50;
+    background:#333;
     position: fixed;
     top:0;
     left:0;
@@ -18,21 +18,23 @@ body {
 }
 
 .tab {
-    height:65px;
+    height: 65px;
     line-height: 67px;
-    font-size:13px;
-    font-weight:bold;
-    color:#BDBDBD;
+    font-size: 13px;
+    font-weight: bold;
+    color: #BDBDBD;
     letter-spacing: 1px;
-    display:inline-block;
+    display: inline-block;
     vertical-align: top;
-    padding-left:60px;
-    padding-right:60px;
+    padding-left: 30px;
+    padding-right: 30px;
+    width: 90px;
 }
 
 .tab-selected {
-    background: #FFF;
-    color:#000;
+    background: #4F4F4F;
+    color: #FFF;
+    box-shadow: inset 0 -5px 0 rgb(224, 109, 50)
 }
 
 #content {
@@ -54,12 +56,13 @@ body {
 }
 
 #right {
-    left:340px;
-    top:0;
-    right:0;
-    bottom:0;
+    left: 340px;
+    top: 0;
+    right: 0;
+    bottom: 0;
     position: absolute;
-    background: #202328;
+    background: #1B1B1B;
+    box-shadow: inset 0 0 20px 5px rgba(0,0,0,0.1);
 }
 
 .button {
@@ -80,7 +83,7 @@ body {
 }
 
 .green {
-    background: #16a085;
+    background: #E06D32;
 }
 
 .intro-title {
@@ -99,10 +102,16 @@ body {
 #map, .map {
     background-size: cover;
     background-repeat: no-repeat;
+    background-position:center center;
     height: 100%;
     width: 100%;
     position: absolute;
     z-index: 2;
+    box-shadow: inset 0 0 20px 5px rgba(0,0,0,0.1);
+}
+
+#map {
+    background-image: url(/images/flat-grid.png);
 }
 
 #status {
@@ -112,11 +121,32 @@ body {
     font-size:9px;
     letter-spacing: 1px;
     color: #FFF;
-    background: #7f8c8d;
+    background: #323232;
     font-weight: bolder;
     text-align: center;
     bottom:0;
     right:0;
     left:0;
     padding: 10px;
+}
+
+#console {
+    background: rgba(0,0,0,0.5);
+    color: #FFF;
+    font-family: 'Source Code Pro';
+    line-height: 13px;
+    font-size: 12px;
+    left: 340px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    z-index:5;
+    padding: 30px;
+    margin:0;
+}
+
+.err {
+    color: #c0392b;
+    font-weight: bold;
 }

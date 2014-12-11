@@ -1,47 +1,39 @@
 var socket = io.connect(location.protocol + "//" + location.host);
 
 var busy = function() {
-    $("#start").css("opacity", 0.5);
-    $("#kill").css("opacity", 1);
+    $("#start").css("opacity", 0.5).css("cursor", "auto");
+    $("#kill").css("opacity", 1).css("cursor", "pointer");
 }
 
 var free = function() {
-    $("#start").css("opacity", 1);
-    $("#kill").css("opacity", 0.5);
+    $("#start").css("opacity", 1).css("cursor", "pointer");
+    $("#kill").css("opacity", 0.5).css("cursor", "auto");
 }
 
-socket.on('update', function(data) {
-    busy();
-    var screenpath = location.protocol + "//" +
-        location.host + "/rviz_bin/" + data;
-    $("<div/>").css('background-image', "url("+ screenpath + ")")
-               .addClass('map')
-               .hide()
-               .appendTo('#right')
-               .fadeIn();
-});
+var frames = [];
 
-socket.on('finish', function(data) {
-    $("#status").text(data);
-    free();
-});
+var disabled = function(e){
+    return $(e).css("opacity") == 0.5;
+}
 
-socket.on('kill', function(data) {
-    $("#status").text(data);
-    free();
-});
-
-socket.on('error', function(data) {
-    $("#status").text(data);
-});
-
-socket.on('load', function(data) {
-    $("#status").text(data);
-    busy();
-});
+var blur = function(e, a){
+    $(e).css({
+       'filter'         : 'blur(' + a + ')',
+       '-webkit-filter' : 'blur(' + a + ')',
+       '-moz-filter'    : 'blur(' + a + ')',
+       '-o-filter'      : 'blur(' + a + ')',
+       '-ms-filter'     : 'blur(' + a + ')'
+    });
+}
 
 $(document).ready(function() {
+
+    busy();
+
+    $("#console").hide();
+
     $("#start").on('click', function() {
+        if(disabled(this)) return;
         $.post('/start', function(err) {
             if (err) {
                 return console.error(err);
@@ -53,8 +45,65 @@ $(document).ready(function() {
     });
 
     $("#kill").on('click', function() {
-        $.post('/kill', function(err) {
+        if(disabled(this)) return;
+        $.post('/kill');
+    });
+
+    $("#togg-console").on('click', function() {
+        $("#console").fadeToggle();
+    });
+
+    $.post("/active", function(data){
+        if(data.toString() == "true") busy();
+        else {
+            $("#console").text("System ready and awaiting your command...\n");
             free();
-        });
+        }
+        connect();
     });
 });
+
+function connect(){
+    socket.on('update', function(data) {
+        busy();
+        var screenpath = location.protocol + "//" +
+            location.host + "/rviz_bin/" + data;
+        frames.push($("<div/>").css('background-image', "url("+ screenpath + ")")
+                   .addClass('map')
+                   .hide()
+                   .appendTo('#right')
+                   .fadeIn(3000));
+        if(frames.length > 3){
+            $(frames[0]).remove();
+            frames.splice(0, 1);
+        }
+    });
+
+    socket.on('finish', function(data) {
+        $("#status").text(data);
+        free();
+    });
+
+    socket.on('kill', function(data) {
+        $("#status").text(data);
+        free();
+    });
+
+    socket.on('error', function(data) {
+        $("#status").text(data);
+    });
+
+    socket.on('load', function(data) {
+        $("#status").text(data);
+        busy();
+    });
+
+    var $console = $("#console");
+
+    socket.on("cout", function(data){
+        $console.append($("<code>" +  data + "</code>"));
+    });
+    socket.on("cerr", function(data){
+        $console.append($("<code class ='err'>" + data + "</code>"));
+    });
+}
