@@ -12,17 +12,17 @@ var free = function() {
 
 var frames = [];
 
-var disabled = function(e){
+var disabled = function(e) {
     return $(e).css("opacity") == 0.5;
 }
 
-var blur = function(e, a){
+var blur = function(e, a) {
     $(e).css({
-       'filter'         : 'blur(' + a + ')',
-       '-webkit-filter' : 'blur(' + a + ')',
-       '-moz-filter'    : 'blur(' + a + ')',
-       '-o-filter'      : 'blur(' + a + ')',
-       '-ms-filter'     : 'blur(' + a + ')'
+        'filter': 'blur(' + a + ')',
+        '-webkit-filter': 'blur(' + a + ')',
+        '-moz-filter': 'blur(' + a + ')',
+        '-o-filter': 'blur(' + a + ')',
+        '-ms-filter': 'blur(' + a + ')'
     });
 }
 
@@ -30,10 +30,31 @@ $(document).ready(function() {
 
     busy();
 
+    var group = $(".SlidingPanelsContentGroup");
+    var length = group.children().length;
+
+    group.css("width", length * 100 + "%");
+    group.addClass("SlidingAnimator");
+
+    $(".SlidingPanelsContent").css("width", 100 / length + "%");
+
+    window.slideTo = function(id) {
+        $(".tab").removeClass("tab-selected");
+        $(".tab-group").children().eq(parseInt(id)).addClass("tab-selected");
+        var attr = "translate3d(" + (-100 / length * id) + "%,0,0)";
+        group.css({
+            "transform": attr,
+            "-webkit-transform": attr,
+            "-moz-transform": attr,
+            "-ms-transform": attr
+        })
+    }
+
+
     $("#console").hide();
 
     $("#start").on('click', function() {
-        if(disabled(this)) return;
+        if (disabled(this)) return;
         $.post('/start', function(err) {
             if (err) {
                 return console.error(err);
@@ -45,12 +66,12 @@ $(document).ready(function() {
     });
 
     $(".nicescroll").niceScroll({
-        cursorborder : "none",
-        cursorcolor : "rgba(255,255,255,0.3)"
+        cursorborder: "none",
+        cursorcolor: "rgba(255,255,255,0.3)"
     });
 
     $("#kill").on('click', function() {
-        if(disabled(this)) return;
+        if (disabled(this)) return;
         $.post('/kill');
     });
 
@@ -58,8 +79,8 @@ $(document).ready(function() {
         $("#console").fadeToggle();
     });
 
-    $.post("/active", function(data){
-        if(data.toString() == "true") busy();
+    $.post("/active", function(data) {
+        if (data.toString() == "true") busy();
         else {
             $("#console").text("System ready and awaiting your command...\n");
             free();
@@ -68,27 +89,27 @@ $(document).ready(function() {
     });
 });
 
-function connect(){
+function connect() {
     socket.on('update', function(data) {
         busy();
         var screenpath = location.protocol + "//" +
             location.host + "/rviz_bin/" + data;
-        frames.push($("<div/>").css('background-image', "url("+ screenpath + ")")
-                   .addClass('map')
-                   .hide()
-                   .appendTo('#right')
-                   .fadeIn(3000));
-        if(frames.length > 3){
+        frames.push($("<div/>").css('background-image', "url(" + screenpath + ")")
+            .addClass('map')
+            .hide()
+            .appendTo('#right')
+            .fadeIn(3000));
+        if (frames.length > 3) {
             $(frames[0]).remove();
             frames.splice(0, 1);
         }
     });
 
     var lastTimeout = 0;
-    var status = function(data){
+    var status = function(data) {
         $("#status").text(data).addClass("highlight");
         clearTimeout(lastTimeout);
-        lastTimeout = setTimeout(function(){
+        lastTimeout = setTimeout(function() {
             $("#status").removeClass("highlight");
         }, 400);
     }
@@ -118,10 +139,10 @@ function connect(){
 
     var $console = $("#console");
 
-    socket.on("cout", function(data){
-        $console.append($("<code>" +  data + "</code>"));
+    socket.on("cout", function(data) {
+        $console.append($("<code>" + data + "</code>"));
     });
-    socket.on("cerr", function(data){
+    socket.on("cerr", function(data) {
         $console.append($("<code class ='err'>" + data + "</code>"));
     });
 }

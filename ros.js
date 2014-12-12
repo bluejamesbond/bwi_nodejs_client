@@ -73,7 +73,7 @@ bash.stderr.on('data', function(buf) {
     send("cerr", buf);
 });
 
-bash.stdin.write("roslaunch bwi_nav2d nav2d_mapper_krr2014.launch --screen");
+bash.stdin.write("roslaunch bwi_nav2d nav2d_mapper_krr2014.launch");
 bash.stdin.end();
 
 send("load", "waiting on roslaunch");

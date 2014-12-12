@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/css/typography.css">
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/SprySlidingPanels.css">
     <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:300,400,700' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Play:400,700' rel='stylesheet' type='text/css'>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -24,37 +25,56 @@
     </p><![endif]-->
     <div id = "header">
         <div class = "tab-group">
-            <div id = "map-section-button" class = "tab">HOME</div>
-            <div id = "map-section-button" class = "tab tab-selected">MAP</div>
-            <div id = "about-section-button" class = "tab">ABOUT</div>
+            <div id = "map-section-button" onclick="javascript:slideTo(0);" class = "tab tab-selected" >HOME</div>
+            <div id = "map-section-button" onclick="javascript:slideTo(1);" class = "tab">SINGLE AGENT</div>
+            <div id = "map2-section-button" onclick="javascript:slideTo(2);" class = "tab">MULTI AGENT</div>
+            <div id = "about-section-button" onclick="javascript:slideTo(3);" class = "tab">ABOUT</div>
         </div>
     </div>
-    <div id = "left">
-        <div style ="position:absolute;left:0;right:0;top:0;bottom:32px;">
-            <div class = "nicescroll" style = "width:100%; height:100%;">
-                <div class = "intro-header">
-                    <div class = "inner">
-                        <div class = "intro-title">Smart Exploration and Mapping Demo</div>
-                        <div class = "intro-author">Mathew Kurian</div>
-                    </div>
+    <div id = "content">
+        <div id="SlidingPanels1" class="SlidingPanels">
+            <div class="SlidingPanelsContentGroup">
+                <div id="p0" class="SlidingPanelsContent">
+                    <div class="inprogress">tell matteo thy page is down</div>
+                    <iframe src="http://farnsworth.csres.utexas.edu/bwi/index.php/" style="border: none;width: 100%;height: 100%;position:absolute;top:0;z-index:2;"></iframe>
                 </div>
-                <div style = "padding:20px;">
-                    <div class = "intro-seperator">Not Possible Without</div>
-                    <div class = "intro-thanks">Matteo Leonetti, Piyush Khandelwal, & Sebastian Kasperski</div>
-                    <div class = "intro-seperator">Description</div>
-                    <div class = "intro-description">Nav2D is a set of libraries and ROS nodes allows to control a mobile robot within a planar environment. The main features are a purely reactive obstacle avoidance, a simple path planner, and a graph based SLAM (Simultaneous Localization and Mapping) node that allows multiple robots to cooperatively build a map. By using an exploration plugin for the navigation module, one or more robots can autonomously explore there working space and create a shared map for navigation on all robots.</div>
-                    <div class = "intro-seperator">Controls</div>
-                    <div class = "button green" id = "start">Start</div>
-                    <div class = "button" id = "kill">Kill</div>
-                    <div class = "button" id = "togg-console">CONSOLE</div>
+                <div id="p1" class="SlidingPanelsContent">
+                    <div id = "left">
+                        <div style ="position:absolute;left:0;right:0;top:0;bottom:32px;">
+                            <div class = "nicescroll" style = "width:100%; height:100%;">
+                                <div class = "intro-header">
+                                    <div class = "inner">
+                                        <div class = "intro-title">Smart Exploration and Mapping Demo</div>
+                                        <div class = "intro-author">Mathew Kurian</div>
+                                    </div>
+                                </div>
+                                <div style = "padding:20px;">
+                                    <div class = "intro-seperator">Not Possible Without</div>
+                                    <div class = "intro-thanks">Sebastian Kasperski,&Matteo Leonetti, & Piyush Khandelwal</div>
+                                    <div class = "intro-seperator">Description</div>
+                                    <div class = "intro-description">Nav2D is a set of libraries and ROS nodes allows to control a mobile robot within a planar environment. The main features are a purely reactive obstacle avoidance, a simple path planner, and a graph based SLAM (Simultaneous Localization and Mapping) node that allows multiple robots to cooperatively build a map. By using an exploration plugin for the navigation module, one or more robots can autonomously explore there working space and create a shared map for navigation on all robots.</div>
+                                    <div class = "intro-seperator">Controls</div>
+                                    <div class = "button green" id = "start">Start</div>
+                                    <div class = "button" id = "kill">Kill</div>
+                                    <div class = "button" id = "togg-console">CONSOLE</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id = "status">System ready</div>
+                    </div>
+                    <div id = "right">
+                        <div id = "map"></div>
+                    </div>
+                    <pre id = "console" class = "nicescroll"></pre>
+                </div>
+                <div id="p2" class="SlidingPanelsContent">
+                    <div class="inprogress">under construction</div>
+                </div>
+                <div id="p3" class="SlidingPanelsContent">
+                    <div class="inprogress">under construction</div>
                 </div>
             </div>
         </div>
-        <div id = "status">System ready</div>
     </div>
-    <div id = "right">
-        <div id = "map"></div>
-    </div>
-    <pre id = "console" class = "nicescroll"></pre>
   </body>
 </html>
