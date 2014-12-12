@@ -127,6 +127,7 @@ setTimeout(function() {
                     capture(function(){
                         send("load", "waiting for positioning.  please wait...");
                         setTimeout(function() {
+
                             console.log("starting exploration");
                             send("load", "initialized exploration.  please wait...");
                             exec("rosservice call /StartExploration 2", function() {
@@ -138,7 +139,10 @@ setTimeout(function() {
                                         if(err) {
                                             send("error", "retrying after 4 seconds");
                                             return setTimeout(loop, 4000);
+                                        } else {
+                                            send("info", "exploring environment");
                                         }
+
                                         setTimeout(loop, 2000);
                                     });
                                 };

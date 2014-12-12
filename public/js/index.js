@@ -44,6 +44,11 @@ $(document).ready(function() {
         });
     });
 
+    $(".nicescroll").niceScroll({
+        cursorborder : "none",
+        cursorcolor : "rgba(255,255,255,0.3)"
+    });
+
     $("#kill").on('click', function() {
         if(disabled(this)) return;
         $.post('/kill');
@@ -79,22 +84,35 @@ function connect(){
         }
     });
 
+    var lastTimeout = 0;
+    var status = function(data){
+        $("#status").text(data).addClass("highlight");
+        clearTimeout(lastTimeout);
+        lastTimeout = setTimeout(function(){
+            $("#status").removeClass("highlight");
+        }, 400);
+    }
+
     socket.on('finish', function(data) {
-        $("#status").text(data);
+        status(data);
         free();
     });
 
     socket.on('kill', function(data) {
-        $("#status").text(data);
+        status(data);
         free();
     });
 
     socket.on('error', function(data) {
-        $("#status").text(data);
+        status(data);
+    });
+
+    socket.on('info', function(data) {
+        status(data);
     });
 
     socket.on('load', function(data) {
-        $("#status").text(data);
+        status(data);
         busy();
     });
 

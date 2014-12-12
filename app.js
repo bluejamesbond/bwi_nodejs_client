@@ -62,6 +62,7 @@ app.post('/kill', function(req, res) {
         io.sockets.emit("kill", "kill denied")
     } else {
         res.send('requested termination');
+        io.sockets.emit("info", "kill signal received");
         send('kill');
     }
 });

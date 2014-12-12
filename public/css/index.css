@@ -6,15 +6,20 @@ body {
     background:#333;
     position: fixed;
     top:0;
-    left:0;
+    left:340px;
     right:0;
     height:65px;
     z-index: 2;
 }
 
 .tab-group {
-    text-align: center;
+    text-align: left;
     font-size:0;
+    overflow:hidden;
+    height:65px;
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
 }
 
 .tab {
@@ -26,9 +31,21 @@ body {
     letter-spacing: 1px;
     display: inline-block;
     vertical-align: top;
-    padding-left: 30px;
-    padding-right: 30px;
-    width: 90px;
+    display: -webkit-inline-flex;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    flex: 1 0 0;
+    -ms-flex: 1 0 0;
+    -webkit-flex: 1 0 0;
+    align-items: center;
+    justify-content: center;
+    -webkit-justify-content: center;
+    -ms-justify-content: center;
+}
+
+.logo {
+    background: #E06D32;
+    color:#FFF;
 }
 
 .tab-selected {
@@ -37,27 +54,17 @@ body {
     box-shadow: inset 0 -5px 0 rgb(224, 109, 50)
 }
 
-#content {
-    position: absolute;
-    top:65px;
-    bottom:0;
-    right:0;
-    left:0;
-}
-
 #left {
     position: absolute;
-    width:300px;
+    width:340px;
     left:0;
     bottom:0;
-    top:0;
-    padding:20px;
-    padding-bottom: 0px;
+    top: 0;
 }
 
 #right {
     left: 340px;
-    top: 0;
+    top: 65px;
     right: 0;
     bottom: 0;
     position: absolute;
@@ -89,13 +96,39 @@ body {
 .intro-title {
     color: #FFF;
     font-size:30px;
+    font-weight:bold;
     padding-top:10px;
+    position: absolute;
+    bottom:18px;
+    left: 0;
+    right:0;
+    padding:20px;
 }
 
-.intro-description {
-    color: #B8B8B8;
-    font-size:12px;
+.intro-author {
+    color: rgba(255,255,255,0.5);
+    font-size:10px;
+    font-weight:bold;
     padding-top:10px;
+    position: absolute;
+    bottom:0;
+    left: 0;
+    right:0;
+    padding:20px;
+    text-transform: uppercase;
+}
+
+
+.intro-description {
+    color: #DDD;
+    font-size:12px;
+    padding-bottom:15px;
+}
+
+.intro-thanks {
+    color: #DDD;
+    font-weight: bold;
+    font-size:12px;
     padding-bottom:15px;
 }
 
@@ -128,6 +161,18 @@ body {
     right:0;
     left:0;
     padding: 10px;
+   transition: all .25s ease-in-out;
+   -moz-transition: all .25s ease-in-out;
+   -webkit-transition: all .25s ease-in-out;
+   -ms-transition: all .25s ease-in-out;
+}
+
+.highlight {
+    background: #555 !important;
+   transition: all .25s ease-in-out;
+   -moz-transition: all .25s ease-in-out;
+   -webkit-transition: all .25s ease-in-out;
+   -ms-transition: all .25s ease-in-out;
 }
 
 #console {
@@ -137,7 +182,7 @@ body {
     line-height: 13px;
     font-size: 12px;
     left: 340px;
-    top: 0;
+    top: 65px;
     right: 0;
     bottom: 0;
     position: absolute;
@@ -149,4 +194,37 @@ body {
 .err {
     color: #c0392b;
     font-weight: bold;
+}
+
+.intro-header {
+    height:250px;
+    width:100%;
+    background:url(/images/header.png);
+    background-position: center center;
+    background-repeat:no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+}
+
+.intro-seperator {
+    border-bottom:1px solid #555;
+    padding-bottom:3px;
+    width:300px;
+    margin-bottom:10px;
+    font-size:9px;
+    color:#888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.intro-header .inner {
+    width:100%;
+    height:100%;
+    background: -moz-linear-gradient(top,  rgba(0,0,0,0) 0%, rgba(0,0,0,0) 11%, rgba(0,0,0,1) 98%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(11%,rgba(0,0,0,0)), color-stop(98%,rgba(0,0,0,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0) 11%,rgba(0,0,0,1) 98%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0) 11%,rgba(0,0,0,1) 98%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0) 11%,rgba(0,0,0,1) 98%); /* IE10+ */
+    background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,0) 11%,rgba(0,0,0,1) 98%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000',GradientType=0 ); /* IE6-9 */
 }
