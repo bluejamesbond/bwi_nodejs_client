@@ -1,29 +1,30 @@
 var socket = io.connect(location.protocol + "//" + location.host);
-
-var busy = function() {
-    $("#start").css("opacity", 0.5).css("cursor", "auto");
-    $("#kill").css("opacity", 1).css("cursor", "pointer");
-}
-
-var free = function() {
-    $("#start").css("opacity", 1).css("cursor", "pointer");
-    $("#kill").css("opacity", 0.5).css("cursor", "auto");
-}
-
-var frames = [];
+// var socket = io.connect("http://localhost:3000");
 
 var disabled = function(e) {
     return $(e).css("opacity") == 0.5;
 }
 
-var blur = function(e, a) {
-    $(e).css({
-        'filter': 'blur(' + a + ')',
-        '-webkit-filter': 'blur(' + a + ')',
-        '-moz-filter': 'blur(' + a + ')',
-        '-o-filter': 'blur(' + a + ')',
-        '-ms-filter': 'blur(' + a + ')'
-    });
+var frames = [];
+
+var busy = function(p) {
+    p = typeof p === "undefined" ? "" : p;
+    $(p + ".start").css("opacity", 0.5).css("cursor", "auto");
+    $(p + ".kill").css("opacity", 1).css("cursor", "pointer");
+}
+
+var free = function(p) {
+    p = typeof p === "undefined" ? "" : p;
+    $(p + ".start").css("opacity", 1).css("cursor", "pointer");
+    $(p + ".kill").css("opacity", 0.5).css("cursor", "auto");
+}
+
+var showPopup = function(){
+    $(".popup, .blanket").fadeIn();
+}
+
+var hidePopup = function(){
+    $(".popup, .blanket").fadeOut();
 }
 
 $(document).ready(function() {
@@ -50,18 +51,21 @@ $(document).ready(function() {
         })
     }
 
+    $(".ok, .blanket").click(function(){
+        hidePopup();
+    });
 
-    $("#console").hide();
+    $(".console").hide();
 
-    $("#start").on('click', function() {
+    $(".start").on('click', function() {
         if (disabled(this)) return;
-        $.post('/start', function(err) {
+        $.post('/start', {
+            type : $(this).attr("type")
+        }, function(err) {
             if (err) {
                 return console.error(err);
             }
-
             busy();
-
         });
     });
 
@@ -70,19 +74,23 @@ $(document).ready(function() {
         cursorcolor: "rgba(255,255,255,0.3)"
     });
 
-    $("#kill").on('click', function() {
+    $(".kill").on('click', function() {
         if (disabled(this)) return;
-        $.post('/kill');
+        $.post('/kill', {
+            type : $(this).attr("type")
+        });
     });
 
-    $("#togg-console").on('click', function() {
-        $("#console").fadeToggle();
+    $(".togg-console").on('click', function() {
+        $("." + $(this).attr("type") + " .console").fadeToggle();
     });
 
-    $.post("/active", function(data) {
-        if (data.toString() == "true") busy();
-        else {
-            $("#console").text("System ready and awaiting your command...\n");
+    $.post("/active", function(sys) {
+        if (sys.active) {
+            free()
+            busy(sys.type);
+        } else {
+            $(".console").text("System ready and awaiting your command...\n");
             free();
         }
         connect();
@@ -93,11 +101,12 @@ function connect() {
     socket.on('update', function(data) {
         busy();
         var screenpath = location.protocol + "//" +
-            location.host + "/rviz_bin/" + data;
+            location.host + "/rviz_bin/" + data.msg;
         frames.push($("<div/>").css('background-image', "url(" + screenpath + ")")
             .addClass('map')
+            .addClass(data.type + "-background")
             .hide()
-            .appendTo('#right')
+            .appendTo('.' + data.type + ' .right')
             .fadeIn(3000));
         if (frames.length > 3) {
             $(frames[0]).remove();
@@ -107,10 +116,10 @@ function connect() {
 
     var lastTimeout = 0;
     var status = function(data) {
-        $("#status").text(data).addClass("highlight");
+        $("." + data.type + " .status").text(data.msg).addClass("highlight");
         clearTimeout(lastTimeout);
         lastTimeout = setTimeout(function() {
-            $("#status").removeClass("highlight");
+            $("." + data.type + " .status").removeClass("highlight");
         }, 400);
     }
 
@@ -119,13 +128,18 @@ function connect() {
         free();
     });
 
-    socket.on('kill', function(data) {
+    socket.on('kill-start', function(data) {
+        status(data);
+    });
+
+    socket.on('kill-end', function(data) {
         status(data);
         free();
     });
 
     socket.on('error', function(data) {
         status(data);
+        showPopup();
     });
 
     socket.on('info', function(data) {
@@ -137,12 +151,16 @@ function connect() {
         busy();
     });
 
-    var $console = $("#console");
+    var console = {
+        "single-agent-mapping" : $(".single-agent-mapping .console"),
+        "multi-agent-mapping" : $(".multi-agent-mapping .console")
+    }
 
     socket.on("cout", function(data) {
-        $console.append($("<code>" + data + "</code>"));
+        console[data.type].append($("<code>" + data.msg + "</code>"));
     });
+
     socket.on("cerr", function(data) {
-        $console.append($("<code class ='err'>" + data + "</code>"));
+        console[data.type].append($("<code class ='err'>" + data.msg + "</code>"));
     });
 }

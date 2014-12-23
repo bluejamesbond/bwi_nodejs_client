@@ -73,7 +73,7 @@ bash.stderr.on('data', function(buf) {
     send("cerr", buf);
 });
 
-bash.stdin.write("roslaunch bwi_nav2d nav2d_mapper_krr2014.launch");
+bash.stdin.write("roslaunch bwi_nav2d nav2d_mapper_krr2014.launch --screen");
 bash.stdin.end();
 
 send("load", "waiting on roslaunch");
@@ -138,12 +138,12 @@ setTimeout(function() {
                                     capture(function(err){
                                         if(err) {
                                             send("error", "retrying after 4 seconds");
-                                            return setTimeout(loop, 4000);
+                                            return setTimeout(loop, 8000);
                                         } else {
                                             send("info", "exploring environment");
                                         }
 
-                                        setTimeout(loop, 2000);
+                                        setTimeout(loop, 4000);
                                     });
                                 };
 

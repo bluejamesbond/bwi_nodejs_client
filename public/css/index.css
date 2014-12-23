@@ -55,7 +55,7 @@ body {
     top: 0;
 }
 
-#right {
+#right, .right {
     left: 340px;
     top: 0;
     right: 0;
@@ -140,7 +140,7 @@ body {
     background-image: url(/images/flat-grid.png);
 }
 
-#status {
+.status {
     position: absolute;
     z-index: 3;
     text-transform: uppercase;
@@ -168,7 +168,7 @@ body {
    -ms-transition: all .25s ease-in-out;
 }
 
-#console {
+#console, .console {
     background: rgba(0,0,0,0.5);
     color: #FFF;
     font-family: 'Source Code Pro';
@@ -228,4 +228,53 @@ div#content {
     top: 60px;
     bottom: 0;
     right: 0;
+}
+
+.blanket {
+    background: rgba(0,0,0,0.5);
+    position: fixed;
+    top:0;
+    right:0;
+    bottom: 0;
+    left:0;
+    z-index: 999;
+}
+
+.popup {
+    z-index: 1000;
+    top: 50%;
+    margin: 0 auto;
+    margin-top: -100px;
+    position: absolute;
+    width: 500px;
+    background: #333;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    height: 192px;
+    left: 0;
+    right: 0;
+    border: 1px solid #444;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.popup-header{
+    width:480px;
+    font-size:30px;
+    color:#717171;
+    font-weight:bold;
+    padding: 10px;
+    background: #555;
+    text-align: center;
+}
+.popup-message {
+    width:480px;
+    font-size: 13px;
+    color: #FFF;
+    padding: 10px;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 22px;
+    padding-bottom: 20px;
+}
+.multi-agent-mapping-background {
+    background-size:inherit !important;
 }
